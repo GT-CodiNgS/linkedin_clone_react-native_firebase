@@ -8,10 +8,10 @@ export default class Home extends Component {
     super(props);
     this.getCruntUserDetails();
 
-    this.state = {
-      proPic:
-        'https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-thumbnail.png',
-    };
+    // this.state = {
+    //   proPic:
+    //     'https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-thumbnail.png',
+    // };
   }
   getCruntUserDetails = async () => {
     try {
