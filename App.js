@@ -16,10 +16,11 @@ export default class App extends Component {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* <Stack.Screen name="load" component={load} /> */}
+          <Stack.Screen name="load" component={load} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="MyTabs" component={MyTabs} />
+          {/* <Stack.Screen name="Home" component={Home} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     );
