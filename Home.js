@@ -35,7 +35,6 @@ export default class Home extends Component {
     return (
       <View>
         <Text> Home </Text>
-        <Icon name="user" size={30} color="grey" />
         <Image style={styles.tinyLogo} source={{uri: this.state.proPic}} />
       </View>
     );
