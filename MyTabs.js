@@ -8,6 +8,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CreatePost from './CreatePost';
 
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
@@ -19,6 +20,10 @@ export default class MyTabs extends Component {
     super(props);
     this.state = {};
   }
+
+  navigate = async () => {
+    this.props.navigation.navigate('CreatePost');
+  };
 
   render() {
     return (
@@ -54,6 +59,7 @@ export default class MyTabs extends Component {
         <Tab.Screen
           name="Post"
           component={Post}
+          onPress={()=>{console.log("hiiiii");}}
           options={{
             tabBarIcon: ({focused}) => {
               const color = focused ? 'black' : 'grey';

@@ -37,7 +37,7 @@ export default class SignUp extends Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         console.log(user.user.email);
-        AsyncStorage.setItem('@email', user.user.email);
+        AsyncStorage.setItem('email', user.user.email);
         this.props.navigation.navigate('MyTabs');
         console.log('User account created & signed in!');
       })
@@ -66,7 +66,7 @@ export default class SignUp extends Component {
     console.log((await user).user.photoURL);
 
     if ((await user).user.displayName != null) {
-      await AsyncStorage.setItem('@email', (await user).user.email);
+      await AsyncStorage.setItem('email', (await user).user.email);
       this.props.navigation.navigate('MyTabs');
     } else {
     }

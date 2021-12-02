@@ -17,13 +17,14 @@ export default class load extends Component {
     this.state = {};
 
     // setTimeout(function () {
-      
+
     // },3000);
     this.getData();
   }
   getData = async () => {
     try {
       const value = await AsyncStorage.getItem('email');
+
       if (value !== null) {
         this.props.navigation.navigate('MyTabs');
       } else {

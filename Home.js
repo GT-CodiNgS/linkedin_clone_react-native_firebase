@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {format} from 'date-fns';
 import {
   View,
   Text,
@@ -7,6 +8,7 @@ import {
   Alert,
   FlatList,
   ImageBackground,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,25 +22,39 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.getCruntUserDetails();
-    // this.savePost();
+
     this.state = {
-      data: [],
+      email: '',
+      posts: [],
       proPic:
         'https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-thumbnail.png',
     };
+    this.getUserDetails();
   }
+  getUserDetails = async () => {
+    try {
+      const url = await AsyncStorage.getItem('url');
+      const email = await AsyncStorage.getItem('email');
 
-  componentDidMount() {
+      this.setState({
+        proPic: url,
+        email: email,
+      });
+      console.log(this.state.email);
+      this.getAll();
+    } catch (error) {
+      Alert(error);
+    }
+  };
+  getAll = async () => {
     const subscriber = firestore()
-      .collection('customer')
+      .collection(`${this.state.email}`)
       .onSnapshot(querySnapshot => {
         const users = [];
 
         querySnapshot.forEach(documentSnapshot => {
           users.push({
             name: documentSnapshot.data().name,
-            email: documentSnapshot.data().email,
             date: documentSnapshot.data().date,
             postUrl: documentSnapshot.data().postUrl,
             title: documentSnapshot.data().title,
@@ -47,45 +63,14 @@ export default class Home extends Component {
         });
 
         this.setState({
-          data: users,
+          posts: users,
         });
       });
-  }
-
-  getCruntUserDetails = async () => {
-    try {
-      const url = await AsyncStorage.getItem('url');
-      this.setState({
-        proPic: url,
-      });
-      console.log('--------------------------' + url);
-
-      // await AsyncStorage.setItem('displayName', cruntUserDisplayName);
-      // await AsyncStorage.setItem(
-      //   'proPicUrl',
-      //   'https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service-thumbnail.png',
-      // );
-    } catch (error) {
-      Alert(error);
-    }
   };
-  savePost = async () => {
-    firestore()
-      .collection('customer')
-      .add({
-        name: 'Udara Deepal ',
-        email: 'gayasthasmika.w@gmail.com',
-        postUrl: 'url',
-        title: 'Lorem Ipsum is simply 🎃 dummy text of the printing and typesetting industry.👩‍🦰 Lorem Ipsum has📃 been the industry',
-        date: '11 / 29/ 2021',
-      })
-      .then(() => {
-        console.log('Post added!');
-      });
-  };
+
   render() {
     return (
-      <View style={{flexDirection: 'column'}}>
+      <KeyboardAvoidingView style={{flexDirection: 'column'}}>
         <View style={styles.header}>
           <Avatar.Image
             style={{marginLeft: 10}}
@@ -98,7 +83,7 @@ export default class Home extends Component {
         </View>
 
         <FlatList
-          data={this.state.data}
+          data={this.state.posts}
           renderItem={({item}) => (
             <View style={styles.postBox}>
               <View style={styles.postHeader}>
@@ -120,11 +105,17 @@ export default class Home extends Component {
 
               <Text style={styles.postTitle}>{item.title}</Text>
               <ImageBackground
-                source={require('./asserts/react.png')}
+                source={{uri: item.postUrl}}
                 style={styles.image}></ImageBackground>
-              
-              <View style={{ height: 0.5 ,borderWidth:0.2,borderColor:'grey',marginTop:2}}></View>
-              
+
+              <View
+                style={{
+                  height: 0.5,
+                  borderWidth: 0.2,
+                  borderColor: 'grey',
+                  marginTop: 2,
+                }}></View>
+
               <View style={styles.postFooter}>
                 <View style={styles.btnSet}>
                   <AntDesignIcons name="like2" size={25} />
@@ -146,7 +137,7 @@ export default class Home extends Component {
             </View>
           )}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -175,14 +166,13 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   postBox: {
-    height: 650,
+    height: 600,
     // borderWidth: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
   },
   postHeader: {
     alignItems: 'center',
-
     height: 75,
     flexDirection: 'row',
   },
@@ -213,7 +203,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   postFooter: {
-    height: 50,
+    height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     // borderWidth: 1,

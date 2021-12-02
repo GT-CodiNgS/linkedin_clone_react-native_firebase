@@ -1,6 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services' 
 
+
+
 import com.android.build.OutputFile
 
 /**
@@ -198,7 +200,9 @@ dependencies {
     
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
-   implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+
 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

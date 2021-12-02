@@ -36,7 +36,7 @@ export default class SignIn extends Component {
 
   getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('@email');
+      const value = await AsyncStorage.getItem('email');
       if (value !== null) {
         this.props.navigation.navigate('MyTabs');
       } else {
@@ -51,7 +51,7 @@ export default class SignIn extends Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         console.log(user);
-        AsyncStorage.setItem('@email', user.user.email);
+        AsyncStorage.setItem('email', user.user.email);
         this.props.navigation.navigate('MyTabs');
       })
       .catch(error => {
@@ -59,9 +59,7 @@ export default class SignIn extends Component {
         console.error(error);
       });
   };
-  remove = async () => {
-    AsyncStorage.removeItem('@email');
-  };
+
   onFacebookButtonPress = async () => {
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
@@ -84,11 +82,13 @@ export default class SignIn extends Component {
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
-    
+
     const user = auth().signInWithCredential(facebookCredential);
     console.log((await user).user);
     await AsyncStorage.setItem('email', (await user).user.email);
     await AsyncStorage.setItem('url', (await user).user.photoURL);
+    await AsyncStorage.setItem('name', (await user).user.displayName);
+
     this.props.navigation.navigate('MyTabs');
     return auth().signInWithCredential(facebookCredential);
   };
@@ -104,10 +104,10 @@ export default class SignIn extends Component {
     const user = auth().signInWithCredential(googleCredential);
     console.log((await user).user.photoURL);
 
-    if ((await user).user.displayName != null) {
+    if ((await user).user.email != null) {
       await AsyncStorage.setItem('email', (await user).user.email);
       await AsyncStorage.setItem('url', (await user).user.photoURL);
-
+      await AsyncStorage.setItem('name', (await user).user.displayName);
       this.props.navigation.navigate('MyTabs');
     } else {
     }

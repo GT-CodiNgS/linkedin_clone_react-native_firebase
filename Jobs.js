@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Alert} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, Avatar} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignIn from './SignIn';
@@ -14,24 +14,25 @@ export default class Jobs extends Component {
   remove = async () => {
     await AsyncStorage.removeItem('email');
     await AsyncStorage.removeItem('url');
+    console.log("sign out"+await AsyncStorage.getItem('url'));
   };
 
   signOut = async () => {
-    this.remove();
+   await this.remove();
     auth()
       .signOut()
-      .then(
-        () => 
-        this.props.navigation.navigate('SignIn')
-        // Alert.alert('Loged Out'),
-      );
+      .then(() => this.props.navigation.navigate('SignIn'));
   };
 
   render() {
     return (
-      <View>
+      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+        <Avatar.Image
+          // style={{marginLeft: 50}}
+          size={100}
+          source={require('./asserts/signOut.jpg')}
+        />
         <Button onPress={() => this.signOut()}>SIGN OUT</Button>
-        <Text> Jobs </Text>
       </View>
     );
   }
