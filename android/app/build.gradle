@@ -199,8 +199,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
-
-    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation 'com.facebook.android:facebook-login:4.30.0'
+    // implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
 
 

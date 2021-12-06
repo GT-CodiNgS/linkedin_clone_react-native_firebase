@@ -9,6 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import load from './load';
 import MyTabs from './MyTabs';
 import Post from './Post';
+
 const Stack = createStackNavigator();
 export default class App extends Component {
   render() {
@@ -18,7 +19,7 @@ export default class App extends Component {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* <Stack.Screen name="load" component={load} /> */}
+          <Stack.Screen name="load" component={load} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="MyTabs" component={MyTabs} />

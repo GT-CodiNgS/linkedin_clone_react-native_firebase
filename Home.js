@@ -18,6 +18,7 @@ import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import storage from '@react-native-firebase/storage';
 
 export default class Home extends Component {
   constructor(props) {
@@ -31,6 +32,11 @@ export default class Home extends Component {
     };
     this.getUserDetails();
   }
+  getAllCollectons = async () => {
+    
+      console.log('tempDoc');
+  
+  };
   getUserDetails = async () => {
     try {
       const url = await AsyncStorage.getItem('url');
@@ -42,6 +48,7 @@ export default class Home extends Component {
       });
       console.log(this.state.email);
       this.getAll();
+      this.getAllCollectons();
     } catch (error) {
       Alert(error);
     }

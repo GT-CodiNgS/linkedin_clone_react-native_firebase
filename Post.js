@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput,Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ImageBackground,
+  Alert,
+} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import CreatePost from './CreatePost';
@@ -25,7 +32,9 @@ export default class Post extends Component {
     this.getUserDetails();
 
     this.state = {
-      imageUrl:'',
+      imageTempUrl:
+        'https://www.macmillandictionary.com/external/slideshow/full/White_full.png',
+      imageUrl: '',
       imageName: '',
       path: '',
       email: '',
@@ -45,6 +54,7 @@ export default class Post extends Component {
       this.setState({
         path: image.path,
         imageName: image.modificationDate,
+        imageTempUrl:image.path,
       });
       this.uploadImage();
       console.log(image.path);
@@ -53,14 +63,14 @@ export default class Post extends Component {
   uploadImage = async () => {
     // create bucket storage reference to not yet existing image
     const reference = storage().ref(
-      `images/${this.state.email}/${this.state.imageName}.jpg`
+      `images/${this.state.email}/${this.state.imageName}.jpg`,
     );
     await reference.putFile(this.state.path);
     const url = await storage()
       .ref(`images/${this.state.email}/${this.state.imageName}.jpg`)
       .getDownloadURL();
     this.setState({
-      imageUrl:url
+      imageUrl: url,
     });
   };
   getUserDetails = async () => {
@@ -98,25 +108,26 @@ export default class Post extends Component {
         this.setState({
           title: '',
         });
-          // this.props.navigation.navigate('MyTabs');
-           Alert.alert('Submitted !', 'Post added', [
-             {
-               text: 'Cancel',
-               onPress: () => console.log('Cancel Pressed'),
-               style: 'cancel',
-             },
-             {
-               text: 'OK', onPress: async () =>
-               this.props.navigation.navigate('MyTabs'),
-                  // console.log('OK Pressed')
-             },
-           ]);
+        // this.props.navigation.navigate('MyTabs');
+        Alert.alert('Submitted !', 'Post added', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: async () =>
+              this.props.navigation.navigate('MyTabs'),
+            // console.log('OK Pressed')
+          },
+        ]);
         console.log('Post added!');
       });
   };
   render() {
     return (
-      <ScrollView style={{flexDirection: 'column', backgroundColor: '#ffffff'}}>
+      <View style={{flexDirection: 'column', backgroundColor: '#ffffff'}}>
         <View style={styles.header}>
           <View style={styles.cancelBtn}>
             <Entypoicons name="cross" size={30} />
@@ -130,7 +141,7 @@ export default class Post extends Component {
             Post
           </Text>
         </View>
-
+        <ScrollView></ScrollView>
         <View style={styles.postHeader}>
           <Avatar.Image
             style={{marginLeft: 10}}
@@ -156,24 +167,26 @@ export default class Post extends Component {
             </View>
           </View>
         </View>
-        <View style={styles.postBody}>
+        <ScrollView style={styles.postBody}>
           <TextInput
             value={this.state.title}
             onChangeText={value => {
-              // console.log(this.state.title, this.state.name);
               this.setState({
                 title: value,
               });
             }}
             placeholderTextColor="lightgrey"
             multiline
-            numberOfLines={8}
+            numberOfLines={1}
             placeholder="What do you want to talk about ?"
             style={styles.input}
-            // onChangeText={onChangeText}
-            // value={}
           />
-        </View>
+          <ImageBackground
+            source={{
+              uri: this.state.imageTempUrl,
+            }}
+            style={styles.image}></ImageBackground>
+        </ScrollView>
         <View style={styles.postOption}>
           <View style={styles.options}>
             <View
@@ -190,6 +203,7 @@ export default class Post extends Component {
             <Text onPress={this.getImageFromGallery} style={styles.textOption}>
               Add a photo
             </Text>
+           
           </View>
           <View style={styles.options2}>
             <Ionicons style={styles.icon} name="ios-videocam" size={20} />
@@ -232,11 +246,17 @@ export default class Post extends Component {
             <Text style={styles.textOption}>Create an event</Text>
           </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  image: {
+    height: 400,
+    resizeMode: 'stretch',
+    borderRadius: 10,
+    // borderWidth: 0.2,
+  },
   input: {
     // borderWidth: 1,
     justifyContent: 'flex-start',
