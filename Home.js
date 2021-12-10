@@ -13,12 +13,20 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import {Avatar, Searchbar} from 'react-native-paper';
+import {
+  Avatar,
+  Searchbar,
+  Button,
+  Menu,
+  Divider,
+  Provider,
+} from 'react-native-paper';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
+import { white } from 'react-native-paper/lib/typescript/styles/colors';
 
 export default class Home extends Component {
   constructor(props) {
@@ -33,9 +41,15 @@ export default class Home extends Component {
     this.getUserDetails();
   }
   getAllCollectons = async () => {
-    
-      console.log('tempDoc');
-  
+    // retrieve a collection
+   firestore()
+     .collection('documents')
+     .get()
+     .then(querySnapshot => {
+       const documents = querySnapshot.docs.map(doc => doc.data());
+      console.log();
+       // do something with documents
+     });
   };
   getUserDetails = async () => {
     try {
@@ -77,7 +91,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={{flexDirection: 'column'}}>
+      <KeyboardAvoidingView style={{flexDirection: 'column',backgroundColor:'white'}}>
         <View style={styles.header}>
           <Avatar.Image
             style={{marginLeft: 10}}
@@ -103,6 +117,7 @@ export default class Home extends Component {
                   <Text style={styles.postName}>{item.name}</Text>
                   <Text style={styles.PostDate}>{item.date}</Text>
                 </View>
+
                 <FeatherIcons
                   style={styles.postMoreOptions}
                   name="more-horizontal"
@@ -144,6 +159,25 @@ export default class Home extends Component {
             </View>
           )}
         />
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            // borderWidth: 1,
+            height: 610,
+          }}>
+          <ImageBackground
+            source={{
+              uri: 'https://media.istockphoto.com/vectors/little-people-computer-error-vector-id1176277785?k=20&m=1176277785&s=612x612&w=0&h=blC9Gf7QoQYjrJ9Sz7dFo_wHmmzj6XIFpU6330CGijE=',
+            }}
+            style={{
+              width:250,
+              height:250,
+              // borderWidth: 1,
+
+            }}></ImageBackground>
+          <Text style={{fontSize: 25}}>No post have been added yet</Text>
+        </View>
       </KeyboardAvoidingView>
     );
   }

@@ -54,7 +54,7 @@ export default class Post extends Component {
       this.setState({
         path: image.path,
         imageName: image.modificationDate,
-        imageTempUrl:image.path,
+        imageTempUrl: image.path,
       });
       this.uploadImage();
       console.log(image.path);
@@ -108,6 +108,8 @@ export default class Post extends Component {
         this.setState({
           title: '',
         });
+        // this.uploadImage();
+
         // this.props.navigation.navigate('MyTabs');
         Alert.alert('Submitted !', 'Post added', [
           {
@@ -117,8 +119,7 @@ export default class Post extends Component {
           },
           {
             text: 'OK',
-            onPress: async () =>
-              this.props.navigation.navigate('MyTabs'),
+            onPress: async () => this.props.navigation.navigate('MyTabs'),
             // console.log('OK Pressed')
           },
         ]);
@@ -203,7 +204,6 @@ export default class Post extends Component {
             <Text onPress={this.getImageFromGallery} style={styles.textOption}>
               Add a photo
             </Text>
-           
           </View>
           <View style={styles.options2}>
             <Ionicons style={styles.icon} name="ios-videocam" size={20} />
@@ -254,8 +254,8 @@ const styles = StyleSheet.create({
   image: {
     height: 400,
     resizeMode: 'stretch',
-    borderRadius: 10,
-    // borderWidth: 0.2,
+    // borderRadius: 10,
+    // borderWidth: 1,
   },
   input: {
     // borderWidth: 1,
